@@ -246,6 +246,7 @@ class _PDFViewerState extends State<PDFViewer> {
                         maxValue: widget.document.count,
                         value: _pageSelected,
                         itemWidth: MediaQuery.of(context).size.width,
+                        selectedTextStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                         haptics: true,
                         onChanged: (value) => setModalState(() => _pageSelected = value)
                     ),
