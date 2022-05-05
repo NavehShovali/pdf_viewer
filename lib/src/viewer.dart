@@ -321,7 +321,7 @@ class _PDFViewerState extends State<PDFViewer> {
                 Icons.view_carousel,
                 color: widget.pickerIconColor ?? Colors.white,
               ),
-              backgroundColor: widget.pickerButtonColor ?? Colors.blue,
+              backgroundColor: widget.pickerButtonColor ?? Theme.of(context).colorScheme.secondary,
               onPressed: () {
                 _pickPage();
               },
