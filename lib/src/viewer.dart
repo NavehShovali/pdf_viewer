@@ -1,6 +1,6 @@
 import 'package:easy_pdf_viewer/easy_pdf_viewer.dart';
-import 'package:easy_pdf_viewer/src/page_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 /// enum to describe indicator position
 enum IndicatorPosition { topLeft, topRight, bottomLeft, bottomRight }
@@ -101,6 +101,7 @@ class _PDFViewerState extends State<PDFViewer> {
   late PageController _pageController;
   final Duration animationDuration = Duration(milliseconds: 200);
   final Curve animationCurve = Curves.easeIn;
+  int _pageSelected = 0;
 
   @override
   void initState() {
@@ -224,17 +225,55 @@ class _PDFViewerState extends State<PDFViewer> {
   }
 
   _pickPage() {
-    showDialog<int>(
+    setState(() {
+      _pageSelected = _pageNumber;
+    });
+    showModalBottomSheet<int>(
         context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
         builder: (BuildContext context) {
-          return PagePicker(
-            title: widget.tooltip.pick,
-            maxValue: widget.document.count,
-            initialValue: _pageNumber,
-          );
-        }).then((int? value) {
+          return StatefulBuilder(builder: (context, setModalState) {
+            return Container(
+              height: 250,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    NumberPicker(
+                        minValue: 1,
+                        maxValue: widget.document.count,
+                        value: _pageSelected,
+                        itemWidth: MediaQuery.of(context).size.width,
+                        haptics: true,
+                        onChanged: (value) => setModalState(() => _pageSelected = value)
+                    ),
+                    Align(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.only(end: 16, top: 16),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            primary: Theme.of(context).colorScheme.secondary,
+                          ),
+                          child: Text(widget.tooltip.jump),
+                          onPressed: () {
+                            Navigator.of(context).pop(_pageSelected);
+                          },
+                        ),
+                      ),
+                    )
+                  ]
+              ),
+            );
+          });
+        }
+    ).then((int? value) {
       if (value != null) {
-        _pageNumber = value;
+        setState(() {
+          _pageNumber = value;
+        });
         _jumpToPage();
       }
     });
