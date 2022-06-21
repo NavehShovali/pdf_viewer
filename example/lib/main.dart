@@ -92,7 +92,7 @@ class _MyAppState extends State<MyApp> {
                   //uncomment below line to preload all pages
                   // lazyLoad: false,
                   // uncomment below line to scroll vertically
-                  // scrollDirection: Axis.vertical,
+                  scrollDirection: Axis.vertical,
 
                   //uncomment below code to replace bottom navigation with your own
                   /* navigationBuilder:

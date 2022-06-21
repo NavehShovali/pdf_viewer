@@ -48,6 +48,8 @@ class PDFViewer extends StatefulWidget {
   final double? panLimit;
   final ValueChanged<int>? onPageChanged;
   final Color? backgroundColor;
+  final bool padEnds;
+  final bool pageSnapping;
 
   final Widget Function(
     BuildContext,
@@ -88,6 +90,8 @@ class PDFViewer extends StatefulWidget {
     this.onPageChanged,
     this.backgroundColor,
     this.indicatorBuilder,
+    this.padEnds = true,
+    this.pageSnapping = true,
   }) : super(key: key);
 
   _PDFViewerState createState() => _PDFViewerState();
@@ -300,6 +304,8 @@ class _PDFViewerState extends State<PDFViewer> {
             },
             scrollDirection: widget.scrollDirection ?? Axis.horizontal,
             controller: _pageController,
+            padEnds: widget.padEnds,
+            pageSnapping: widget.pageSnapping,
             itemCount: _pages?.length ?? 0,
             itemBuilder: (context, index) => _pages![index] == null
                 ? Center(
